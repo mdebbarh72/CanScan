@@ -9,7 +9,7 @@ from collections import Counter
 class Painter():
 
     @classmethod
-    def drawBarPlt(data, title, xl, yl):
+    def drawBarPlt(cls, data, title, xl, yl):
         counts = Counter(data)
 
         plt.figure(figsize=(10, 5))
@@ -22,7 +22,7 @@ class Painter():
         plt.show()
 
     @classmethod
-    def displayImageSimples(images, classes, labels):
+    def displayImageSimples(cls, images, classes, labels):
         fig, axes = plt.subplots(
             1, len(classes),
             figsize=(4 * len(classes), 4)

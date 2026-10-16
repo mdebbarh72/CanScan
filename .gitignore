@@ -2,3 +2,4 @@
 .venv
 airflow 
 mlflow
+models

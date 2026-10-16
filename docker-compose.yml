@@ -1,0 +1,39 @@
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: app/Dockerfile
+    container_name: brainscan-api
+    ports:
+      - "8000:8000"
+    volumes:
+      # Model files stay outside the image (read-only)
+      - ./models:/models:ro
+    environment:
+      MODEL_PATH: /models/brain_tumor_cnn.h5
+      CLASS_NAMES_PATH: /models/class_names.pkl
+      MAX_UPLOAD_MB: "10"
+      CONFIDENCE_THRESHOLD: "0.70"
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 60s   # TensorFlow + model loading takes a while
+    restart: unless-stopped
+
+  streamlit:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: brainscan-ui
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped

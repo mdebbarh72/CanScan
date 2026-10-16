@@ -1,0 +1,10 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+pydantic>=2.6
+numpy
+opencv-python-headless
+joblib
+# Use the SAME TensorFlow version you trained with (check: pip freeze | grep -i tensorflow)
+tensorflow-cpu>=2.16,<2.19
+Pillow
